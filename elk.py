@@ -5,58 +5,65 @@ pp = pprint.PrettyPrinter(indent=4)
 
 def main():
 
-    docs = [
-        {'a':'11', 'b':['77','88'], 'c':['12']},
-        {'a':'22', 'b':['99','00'], 'c':['31','32','41']},
+    structs = [
+        {'a':'11', 'b':['77','88']},
+        {'a':'22', 'b':['99','00']},
+        {'a':'33', 'b':[{'x':'1'},{'y':'2'}]},
     ]
 
+    pp.pprint(structs)
+    docs = structs_to_docs(structs)
+    print()
     pp.pprint(docs)
-    docs = expand_lists(docs)
-    docs = expand_lists(docs)
-
-    pp.pprint(docs)
 
 
-def expand_lists(docs):
+def structs_to_docs(structs):
 
-    new_docs = list()
-    for doc in docs:
-        new_doc = dict()
+    while structs_contain_lists(structs):
+        new_structs = list()
+        for struct in structs:
+            new_structs = new_structs + expand_struct_by_list(struct)
+        structs = new_structs
 
-        if doc_contains_lists(doc):
-            print('need to expand')
-            new_docs = new_docs + expand_doc(doc)
-        else:
-            print('no expansion')
-            new_docs = new_docs + doc
+    docs = structs
 
-    return new_docs
+    return docs
 
 
-def expand_doc(doc):
+def structs_contain_lists(structs):
 
-    k_list = find_first_list(doc)
+    for struct in structs:
+        for k in struct.keys():
+            if type( struct[k] ) == list:
+                return True
 
-    new_docs = list()
+    return False
 
-    base_doc = dict()
-    for k in doc.keys():
+
+def expand_struct_by_list(struct):
+
+    k_list = find_first_list(struct)
+
+    base_struct = dict()
+    for k in struct.keys():
         if k != k_list:
-            base_doc.update({k : doc[k]})
+            base_struct.update( {k:struct[k]})
 
-    for v in doc[k_list]:
-        new_doc = dict()
-        new_doc.update( base_doc )
-        new_doc.update({k_list : v})
-        new_docs.append(new_doc)
+    new_structs = list()
+    for elem in struct[k_list]:
+        new_struct = dict()
+        new_struct.update(base_struct)
+        new_struct.update({k_list:elem})
+        new_structs.append(new_struct)
 
-    return new_docs
+    return new_structs
 
 
-def doc_contains_lists(doc):
 
-    for k in doc.keys():
-        if type(doc[k]) == list:
+def struct_contains_lists(struct):
+
+    for k in struct.keys():
+        if type(struct[k]) == list:
             return True
 
     return False
