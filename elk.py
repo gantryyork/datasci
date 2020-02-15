@@ -3,12 +3,13 @@
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
+
 def main():
 
     structs = [
-        {'a':'11', 'b':['77','88']},
-        {'a':'22', 'b':['99','00']},
-        {'a':'33', 'b':[{'x':'1'},{'y':'2'}]},
+        {'a': '11', 'b': ['77', '88']},
+        {'a': '22', 'b': ['99', '00']},
+        {'a': '33', 'b': [{'x': '1'}, {'y': '2'}]},
     ]
 
     pp.pprint(structs)
@@ -34,7 +35,7 @@ def structs_contain_lists(structs):
 
     for struct in structs:
         for k in struct.keys():
-            if type( struct[k] ) == list:
+            if type(struct[k]) == list:
                 return True
 
     return False
@@ -47,17 +48,16 @@ def expand_struct_by_list(struct):
     base_struct = dict()
     for k in struct.keys():
         if k != k_list:
-            base_struct.update( {k:struct[k]})
+            base_struct.update({k: struct[k]})
 
     new_structs = list()
     for elem in struct[k_list]:
         new_struct = dict()
         new_struct.update(base_struct)
-        new_struct.update({k_list:elem})
+        new_struct.update({k_list: elem})
         new_structs.append(new_struct)
 
     return new_structs
-
 
 
 def struct_contains_lists(struct):
@@ -76,7 +76,6 @@ def find_first_list(doc):
             return k
 
     return None
-
 
 
 if __name__ == '__main__':
