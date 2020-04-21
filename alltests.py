@@ -3,6 +3,8 @@ import random
 
 import number
 import matrix
+import gps.convert 
+import gps.math
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -237,6 +239,39 @@ class TestMatrix(unittest.TestCase):
     def test_hadamard_2(self):
         H2 = matrix.Hadamard(2)
         self.assertTrue(True)
+
+
+class TestGPS(unittest.TestCase):
+
+    def test_precision_4(self):
+        n = gps.convert.precision(8.3333333, 4)
+        self.assertEqual(n, 8.3333)
+
+    def test_ddeg(self):
+        ddeg = gps.convert.ddeg(45, 30, 30)
+        self.assertEqual(ddeg, 45.5083)
+
+    def test_dms(self):
+        p = gps.convert.dms(145.5056)
+        self.assertEqual([145, 30, 20], p)
+
+    def test_nm(self):
+        self.assertEqual(gps.convert.nm(50), 26.9979)
+
+    def test_mi(self):
+        self.assertEqual(gps.convert.mi(50), 31.0686)
+
+    def test_lon_pos(self):
+        self.assertEqual(gps.convert.longitude(135), 135)
+
+    def test_lon_neg(self):
+        self.assertEqual(gps.convert.longitude(-45), -45)
+
+    def test_lon_pos_big(self):
+        self.assertEqual(gps.convert.longitude(190), -170)
+
+    def test_lon_neg_big(self):
+        self.assertEqual(gps.convert.longitude(-270), 90)
 
 
 class DontRunELK(unittest.TestCase):
