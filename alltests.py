@@ -273,6 +273,17 @@ class TestGPS(unittest.TestCase):
     def test_lon_neg_big(self):
         self.assertEqual(gps.convert.longitude(-270), 90)
 
+    def test_lat_pos(self):
+        self.assertEqual(gps.convert.latitude(75), 75)
+
+    def test_lat_neg(self):
+        self.assertEqual(gps.convert.latitude(-30), -30)
+
+    def test_lat_pos_big(self):
+        self.assertEqual(gps.convert.latitude(135), 45)
+
+    def test_lat_neg_big(self):
+        self.assertEqual(gps.convert.latitude(-110), -70)
 
 class DontRunELK(unittest.TestCase):
 

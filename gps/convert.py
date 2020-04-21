@@ -24,7 +24,18 @@ def ddeg(d, m, s):
 
 
 def latitude(ddeg):
-    return
+
+    lat_mod = math.fmod(ddeg, 180)
+
+    lat = 0
+    if lat_mod < -90:
+        lat = -90 - (lat_mod + 90)
+    elif lat_mod >= 90:
+        lat = 90 - (lat_mod - 90)
+    else:
+        lat = lat_mod
+
+    return lat
 
 
 def longitude(ddeg):
